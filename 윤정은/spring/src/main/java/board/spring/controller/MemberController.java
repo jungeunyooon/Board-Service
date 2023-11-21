@@ -13,11 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping("api/members")
 public class MemberController {
 
     private final MemberService memberService;
+
+//    @RequiredArgsConstructor를 대체하는 코드
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     // 회원가입
     @PostMapping
