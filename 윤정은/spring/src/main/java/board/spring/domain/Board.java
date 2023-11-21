@@ -29,6 +29,7 @@ public class Board {
     private String content;
 
     @OneToMany(mappedBy = "board")
+    @Column(nullable = false)
     private List<Comment> comments = new ArrayList<>();
 
     public Board(final String title, final String content, final Member member) {
