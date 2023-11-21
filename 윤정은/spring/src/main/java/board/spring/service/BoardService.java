@@ -58,28 +58,6 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-
-
-
-//    // 특정 회원이 작성한 게시글 조회
-//    public ResponseEntity<List<BoardListResponse>> findPostListByEmail(Long memberId) {
-//        return memberRepository.findById(memberId)
-//                .map(findMember -> {
-//                    List<Board> postList = boardRepository.findAllListByMemberId(findMember.getId());
-//                    List<BoardListResponse> responseList = postList.stream()
-//                            .map(BoardListResponse::from)
-//                            .collect(Collectors.toList());
-//                    return ResponseEntity.ok(responseList);
-//                })
-//                .orElse(ResponseEntity.noContent().build());
-//    }
-//
-//    // 게시글 상세 조회
-//    public Optional<BoardDetailResponse> findDetail(Long boardId) {
-//        return boardRepository.findById(boardId)
-//                .map(BoardDetailResponse::from);
-//    }
-
     // 특정 회원이 작성한 게시글 조회
     public ResponseEntity<List<BoardListResponse>> findPostListByEmail(Long memberId) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
