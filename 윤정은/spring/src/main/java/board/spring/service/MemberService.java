@@ -35,11 +35,6 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-//    public boolean loginMember(MemberLoginRequest request) {
-//        return memberRepository.findByEmailAndPassword(request.getEmail(), request.getPassword())
-//                .isPresent();
-//    }
-
     // Spring Data JPA 메서드 → SQL OR JPQL
     public boolean loginMember(MemberLoginRequest request) {
         TypedQuery<Member> query = entityManager.createQuery(
