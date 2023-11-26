@@ -1,47 +1,34 @@
 package board.spring.service;
 
 import board.spring.domain.Member;
-import board.spring.dto.request.MemberLoginRequest;
-import board.spring.dto.request.MemberSaveRequest;
-import board.spring.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import board.spring.dto.request.MemberSignInRequest;
+import board.spring.dto.request.MemberSignUpRequest;
+import board.spring.repository.JPQL.MemberInterface;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
-//@RequiredArgsConstructor
 public class MemberService {
-    private final MemberRepository memberRepository;
+    private final MemberInterface memberInterface;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    // 생성자 주입 (@RequiredArgsConstructor)
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+    public MemberService(MemberInterface memberInterface) {
+        this.memberInterface = memberInterface;
     }
-
-    public void saveMember(MemberSaveRequest request) {
+    public void signUp(MemberSignUpRequest request) {
         Member member = request.toEntity();
-        memberRepository.save(member);
+        memberInterface.save(member);
+    }
+    public void signIn(MemberSignInRequest request) {
+        Member member = memberInterface.findByEmail(request.getEmail()).orElseThrow(
+                () -> new RuntimeException("존재하지 않는 회원입니다.")
+        );
+        if (!member.getPassword().equals(request.getPassword())) throw new RuntimeException("로그인 실패");
     }
 
-    // Spring Data JPA 메서드 → SQL OR JPQL
-    public boolean loginMember(MemberLoginRequest request) {
-        TypedQuery<Member> query = entityManager.createQuery(
-                "SELECT m FROM Member m WHERE m.email = :email AND m.password = :password", Member.class);
-        query.setParameter("email", request.getEmail());
-        query.setParameter("password", request.getPassword());
-        List<Member> result = query.getResultList();
-        return !result.isEmpty();
+    public Member getMemberById(Long memberId) {
+        return memberInterface.findById(memberId).orElseThrow(
+                () -> new RuntimeException("존재하지 않는 회원입니다.")
+        );
     }
 }
