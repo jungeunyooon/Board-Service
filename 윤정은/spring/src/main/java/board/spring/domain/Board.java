@@ -1,16 +1,9 @@
 package board.spring.domain;
 
-import board.spring.dto.request.BoardSaveRequest;
+import board.spring.dto.request.BoardUpdateRequest;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Getter
-@NoArgsConstructor
 public class Board {
 
     @Id
@@ -18,7 +11,7 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -28,9 +21,7 @@ public class Board {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "board")
-    @Column(nullable = false)
-    private List<Comment> comments = new ArrayList<>();
+    public Board() {}
 
     public Board(final String title, final String content, final Member member) {
         this.title = title;
@@ -38,8 +29,20 @@ public class Board {
         this.member = member;
     }
 
-    public void update(BoardSaveRequest request){
+    public void update(BoardUpdateRequest request){
         this.title = request.getTitle();
+        this.content = request.getContent();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Member getMember() {
+        return member;
+    }
 }
