@@ -1,12 +1,11 @@
 package board.spring.dto.request;
 
-
-import board.spring.domain.Comment;
+import jakarta.validation.constraints.NotBlank;
 
 public class CommentUpdateRequest {
+
+    @NotBlank(message = "공백일 수 없습니다.")
     private String content;
 
-    public Comment toEntity() {
-        return new Comment(content);
-    }
+    public String getContent() { return content;}
 }

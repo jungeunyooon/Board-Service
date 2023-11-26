@@ -1,8 +1,7 @@
 package board.spring.domain;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 public class Member {
@@ -12,31 +11,27 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String nickname;
 
-    @OneToMany(mappedBy = "member")
-    private List<Board> boards = new ArrayList<>();
+    public Member() {}
 
-    @OneToMany(mappedBy = "member")
-    private List<Comment> comments = new ArrayList<>();
-
-    public Member() {
-        //@NoArgsConstructor
-    }
     public Member(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
     }
 
-    public Member(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public String getEmail() {
+        return email;
     }
 
-    public Long getId() {
-        return id;
+    public String getPassword() {
+        return password;
     }
+
 }

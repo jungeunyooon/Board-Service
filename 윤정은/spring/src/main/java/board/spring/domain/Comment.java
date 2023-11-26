@@ -1,15 +1,9 @@
 package board.spring.domain;
 
+import board.spring.dto.request.CommentUpdateRequest;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.beans.ConstructorProperties;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -19,25 +13,32 @@ public class Comment {
 
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "memberId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_Id")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "boardId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_Id")
     private Board board;
 
+    public Comment() {}
 
-    public Comment(String newContent) {
-        this.content = newContent;
-    }
-
-    public void updateContent(String newContent) {
-        this.content = newContent;
-    }
     public Comment(String content, Member member, Board board) {
         this.content = content;
         this.member = member;
         this.board = board;
     }
+
+    public void update(CommentUpdateRequest request) {
+        this.content = request.getContent();
+    }
+
+    public String getContent(){
+        return content;
+    }
+
+    public Member getMember(){
+        return member;
+    }
+
 }
